@@ -8,8 +8,7 @@ import 'Finance.dart';
 //import 'dart:isolate';
 //import 'dart:convert';
 
-String responce ="6758,200,1665\n9837,200,712\n6976,200,1746\n";
- List<Price> prices = Finance.parse(responce);
+
 void main() {
   runApp(new SampleApp());
 }
@@ -107,11 +106,11 @@ class _SampleAppPageState extends State<SampleAppPage> {
   Widget getRow(int i) {
     //return new Padding(padding: new EdgeInsets.all(10.0), child: new Text("Row ${widgets[i]["title"]}"));
      return new Padding(padding: new EdgeInsets.all(15.0), child:Container (child: Row(children:[
-        Text("Name:${widgets[i].name} "),
-        Text("Code:${widgets[i].code}"),
-        Text("RealValue:${widgets[i].realValue}"),
-        Text("Percent:${widgets[i].percent}"),
-        Text("Itemprice:${widgets[i].itemprice.toString()}"),
+        Text(":${widgets[i].name} "),
+        Text("code:${widgets[i].code}"),
+        Text(":${widgets[i].realValue}"),
+        Text("%:${widgets[i].percent}"),
+        Text(":${widgets[i].itemprice.toString()}"),
         Text("Stocks:${widgets[i].stocks.toString()}"),
        ],),
        ),
@@ -138,7 +137,7 @@ class _SampleAppPageState extends State<SampleAppPage> {
 
     http.Client _httpClient;
      _httpClient = new http.Client();
-  //  int i = 0;
+    int i = 0;
   //static bool actuallyFetchData = true;
 
   //String _fetchNextChunk() {
@@ -146,10 +145,25 @@ class _SampleAppPageState extends State<SampleAppPage> {
     String realValue = "";
     String realChange = "";
     String percent = "";
-    //String responce ="6758,200,1665\n9837,200,712\n6976,200,1746\n";
-    //List<Price> prices = Finance.parse(responce);
-    //List<Price> prices = Finance.parse(responce);
+    
+    
+    String responce ="6758,200,1665\n9837,200,712\n6976,200,1746\n";
+    List<Price> prices = Finance.parse(responce);
+   
     Price price = new Price();
+
+    /*
+    List<String> language=["c","js","dart"];//way to declare DART array
+    main(){
+      language.forEach((data){
+        // this is an anonymous function : a function without name
+        print(data);
+      });
+    }
+    */
+
+  
+  
 //for
   for(price in prices) {
     _httpClient.get(_urlToFetch(price.code)).then<Null>((http.Response response) {
@@ -202,18 +216,34 @@ class _SampleAppPageState extends State<SampleAppPage> {
       }
 
      
-      Price price = new Price();
-      price.name =companyName;
-      price.realValue = realValue;
+      
+     /*
+      prices.forEach((data){
+        // this is an anonymous function : a function without name
+        price.name=companyName;
+       price.realValue = realValue;
       price.prevday = realChange;
       price.percent = percent;
+      });
+*/
+     
+     
+     
+     
+      //price.realValue = realValue;
+      //price.prevday = realChange;
+      //price.percent = percent;
+
+     
 
       print(price.name);
       print(price.realValue);
       print(price.prevday);
       print(price.percent);
-      print("price to Anser= $price");
-      print("prices to Anser= ${prices[0]}");
+
+      prices[i].name =companyName;
+      print(prices[i].name);
+
 
       companyName = "";
       realValue = "";
@@ -224,16 +254,22 @@ class _SampleAppPageState extends State<SampleAppPage> {
      // save.storageWrite(msg.toString());
       
     });//http
+    i = ++i;
+    print("i= $i");
+   
   }//for to end
-  setState(() {
+    widgets =  prices;
+  /*
+   setState(() {
         //msg= prices;
         widgets =  prices;
-        print("mainpricesAnser= $msg");
+        print("mainpricesAnser= $widgets");
        // widgets = new List.from(widgets);
        // widgets.add(getRow(widgets.length + 1));
         //storage.storageAll();
         //storage.storageRead3();
       });
+ */
  }//load
 
 }//stste
