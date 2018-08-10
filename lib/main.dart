@@ -8,7 +8,8 @@ import 'Finance.dart';
 //import 'dart:isolate';
 //import 'dart:convert';
 
-
+String responce ="6758,200,1665\n9837,200,712\n6976,200,1746\n";
+ List<Price> prices = Finance.parse(responce);
 void main() {
   runApp(new SampleApp());
 }
@@ -28,6 +29,8 @@ class SampleApp extends StatelessWidget {
 
 class SampleAppPage extends StatefulWidget {
   SampleAppPage({Key key}) : super(key: key);
+  
+ 
 
   @override
   _SampleAppPageState createState() => new _SampleAppPageState();
@@ -35,8 +38,8 @@ class SampleAppPage extends StatefulWidget {
 
 class _SampleAppPageState extends State<SampleAppPage> {
   List widgets=[];
-  String responce ="6758,200,1665\n9837,200,712\n6976,200,1746\n";
-  List<Price> prices ;
+  
+ 
 
 
   int i = 0;
@@ -96,13 +99,23 @@ class _SampleAppPageState extends State<SampleAppPage> {
 
 
   ListView getListView() => new ListView.builder(
-      itemCount: widgets.length,
+      itemCount: widgets.length,//<-- setState()
       itemBuilder: (BuildContext context, int position) {
-        return  new Text("${widgets[position]}");//getRow(position);
+        return  /*new Text("${widgets[position]}");*/getRow(position);
       });
 
   Widget getRow(int i) {
-    return new Padding(padding: new EdgeInsets.all(10.0), child: new Text("Row ${widgets[i]["title"]}"));
+    //return new Padding(padding: new EdgeInsets.all(10.0), child: new Text("Row ${widgets[i]["title"]}"));
+     return new Padding(padding: new EdgeInsets.all(15.0), child:Container (child: Row(children:[
+        Text("Name:${widgets[i].name} "),
+        Text("Code:${widgets[i].code}"),
+        Text("RealValue:${widgets[i].realValue}"),
+        Text("Percent:${widgets[i].percent}"),
+        Text("Itemprice:${widgets[i].itemprice.toString()}"),
+        Text("Stocks:${widgets[i].stocks.toString()}"),
+       ],),
+       ),
+     );
   }
 
   void pasonalGetserchi(){
@@ -121,11 +134,11 @@ class _SampleAppPageState extends State<SampleAppPage> {
 
   loadData() async {
     List msg = new List();
-    prices = Finance.parse(responce);
+    
 
     http.Client _httpClient;
      _httpClient = new http.Client();
-    int i = 0;
+  //  int i = 0;
   //static bool actuallyFetchData = true;
 
   //String _fetchNextChunk() {
@@ -133,11 +146,13 @@ class _SampleAppPageState extends State<SampleAppPage> {
     String realValue = "";
     String realChange = "";
     String percent = "";
-    
-
+    //String responce ="6758,200,1665\n9837,200,712\n6976,200,1746\n";
+    //List<Price> prices = Finance.parse(responce);
+    //List<Price> prices = Finance.parse(responce);
+    Price price = new Price();
 //for
-  for(Price item in prices) {
-    _httpClient.get(_urlToFetch(item.code)).then<Null>((http.Response response) {
+  for(price in prices) {
+    _httpClient.get(_urlToFetch(price.code)).then<Null>((http.Response response) {
       final String json = response.body;
 
       String searchWord = "symbol"; //検索する文字列symbol
@@ -186,27 +201,39 @@ class _SampleAppPageState extends State<SampleAppPage> {
         percent += json[foundIndex1 + i1]; //previous 前日比? %
       }
 
-      print(companyName);
-      print(realValue);
-      print(realChange);
-      print(percent);
-      
-      item.name =companyName;
-      item.realValue = realValue;
-      item.prev_day = realChange;
-      item.percent = percent;
+     
+      Price price = new Price();
+      price.name =companyName;
+      price.realValue = realValue;
+      price.prevday = realChange;
+      price.percent = percent;
+
+      print(price.name);
+      print(price.realValue);
+      print(price.prevday);
+      print(price.percent);
+      print("price to Anser= $price");
+      print("prices to Anser= ${prices[0]}");
+
+      companyName = "";
+      realValue = "";
+      realChange = "";
+      percent = "";
       //storage.storageWrite(msg.toString());
       //StorageControl save = new StorageControl();
      // save.storageWrite(msg.toString());
-      setState(() {
-        widgets = prices;
+      
+    });//http
+  }//for to end
+  setState(() {
+        //msg= prices;
+        widgets =  prices;
+        print("mainpricesAnser= $msg");
+       // widgets = new List.from(widgets);
+       // widgets.add(getRow(widgets.length + 1));
         //storage.storageAll();
         //storage.storageRead3();
       });
-    });//http
-
-    
-  }//for to end
  }//load
 
 }//stste

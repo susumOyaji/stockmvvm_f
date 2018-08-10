@@ -31,7 +31,7 @@
                   p.itemprice = (lista[2]);//購入単価
                   prices.add(p);
 
-                  print('${list.indexOf(row)}: $row');
+                  print('Finance=${list.indexOf(row)}: $row');
                 };
               };
 
@@ -61,16 +61,12 @@
 
     class Price
     {
-      String code ;//会社名*
-      //get code => _code; set code(value) {_code = value;}
-
-
-
-        String name;
+      String code ;//会社名コード
+      String name;//会社名*
         dynamic stocks;//保有数*
         dynamic itemprice;//購入価格*
         dynamic realprice;//現在値**
-        String prev_day;//前日比±**
+        String prevday;//前日比±**
         String percent; //前日比％**
         String polar; //上げ下げ(+ or -)
         dynamic ayAssetprice;//保有数* 購入価格 = 投資総額
