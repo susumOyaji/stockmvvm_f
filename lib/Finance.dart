@@ -63,9 +63,9 @@
     {
       String code ;//会社名コード
       String name;//会社名*
-        dynamic stocks;//保有数*
+        var stocks;//保有数*
         dynamic itemprice;//購入価格*
-        dynamic realprice;//現在値**
+        double realprice;//現在値**
         String prevday;//前日比±**
         String percent; //前日比％**
         String polar; //上げ下げ(+ or -)
@@ -79,7 +79,7 @@
         dynamic totalAsset;//現在評価額合計
         //public string  ButtonId { get; set; }
         //public string ButtonColor { get; set; }
-        dynamic gain;//損益
+        double gain;//損益
         //String FirstLastName { get { return Prev_day + "," + Percent; } }
         int idindex;
 
